@@ -1,38 +1,38 @@
-#-*-coding:GBK -*-
+#-*-coding:UTF-8 -*-
 import numpy as np
 import gradio as gr
 
 def function_hw1(input_image):
     if input_image is None:
-        raise gr.Error('ÊäÈë´íÎó£ºÔÚ´¦ÀíÖ®Ç°ÇëÏÈÊäÈëÒ»ÕÅÍ¼Ïñ', duration=5)
+        raise gr.Error('è¾“å…¥é”™è¯¯ï¼šåœ¨å¤„ç†ä¹‹å‰è¯·å…ˆè¾“å…¥ä¸€å¼ å›¾åƒ', duration=5)
     output_image = input_image
-    # Çë²¹³ä×÷Òµ1µÄÍ¼Ïñ´¦Àí´úÂë
+    # è¯·è¡¥å……ä½œä¸š1çš„å›¾åƒå¤„ç†ä»£ç 
     return output_image
 
 def function_hw2(input_image):
     if input_image is None:
-        raise gr.Error('ÊäÈë´íÎó£ºÔÚ´¦ÀíÖ®Ç°ÇëÏÈÊäÈëÒ»ÕÅÍ¼Ïñ', duration=5)    
+        raise gr.Error('è¾“å…¥é”™è¯¯ï¼šåœ¨å¤„ç†ä¹‹å‰è¯·å…ˆè¾“å…¥ä¸€å¼ å›¾åƒ', duration=5)    
     output_image = input_image
-    # Çë²¹³ä×÷Òµ2µÄÍ¼Ïñ´¦Àí´úÂë
+    # è¯·è¡¥å……ä½œä¸š2çš„å›¾åƒå¤„ç†ä»£ç 
     return output_image
 
 def function_hw3(input_image):
     if input_image is None:
-        raise gr.Error('ÊäÈë´íÎó£ºÔÚ´¦ÀíÖ®Ç°ÇëÏÈÊäÈëÒ»ÕÅÍ¼Ïñ', duration=5)   
+        raise gr.Error('è¾“å…¥é”™è¯¯ï¼šåœ¨å¤„ç†ä¹‹å‰è¯·å…ˆè¾“å…¥ä¸€å¼ å›¾åƒ', duration=5)   
     output_image = input_image
-    # Çë²¹³ä×÷Òµ3µÄÍ¼Ïñ´¦Àí´úÂë
+    # è¯·è¡¥å……ä½œä¸š3çš„å›¾åƒå¤„ç†ä»£ç 
     return output_image
 
 def function_hw4(input_image):
     if input_image is None:
-        raise gr.Error('ÊäÈë´íÎó£ºÔÚ´¦ÀíÖ®Ç°ÇëÏÈÊäÈëÒ»ÕÅÍ¼Ïñ', duration=5)
+        raise gr.Error('è¾“å…¥é”™è¯¯ï¼šåœ¨å¤„ç†ä¹‹å‰è¯·å…ˆè¾“å…¥ä¸€å¼ å›¾åƒ', duration=5)
     output_image = input_image
-    # Çë²¹³ä×÷Òµ4µÄÍ¼Ïñ´¦Àí´úÂë
+    # è¯·è¡¥å……ä½œä¸š4çš„å›¾åƒå¤„ç†ä»£ç 
     return output_image
 
 def function_hw5(input_image):
     if input_image is None:
-        raise gr.Error('ÊäÈë´íÎó£ºÔÚ´¦ÀíÖ®Ç°ÇëÏÈÊäÈëÒ»ÕÅÍ¼Ïñ', duration=5)
+        raise gr.Error('è¾“å…¥é”™è¯¯ï¼šåœ¨å¤„ç†ä¹‹å‰è¯·å…ˆè¾“å…¥ä¸€å¼ å›¾åƒ', duration=5)
     output_image = input_image
-    # Çë²¹³ä×÷Òµ5µÄÍ¼Ïñ´¦Àí´úÂë
+    # è¯·è¡¥å……ä½œä¸š5çš„å›¾åƒå¤„ç†ä»£ç 
     return output_image

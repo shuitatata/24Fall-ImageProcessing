@@ -1,4 +1,4 @@
-#-*-coding:GBK -*-
+#-*-coding:utf-8 -*-
 from __future__ import annotations
 
 import argparse
@@ -9,13 +9,13 @@ import numpy as np
 
 def create_demo_hw1(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## ×÷ÒµÒ»: XXX¹¤¾ß') 
+        gr.Markdown('## ä½œä¸šä¸€: XXXå·¥å…·') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='ÊäÈëÍ¼Ïñ')  
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='è¾“å…¥å›¾åƒ')  
             with gr.Column():
-                output_image = gr.Image(type='numpy', label='Êä³öÍ¼Ïñ', interactive=False)
-                run_button = gr.Button(value='ÔËĞĞ')
+                output_image = gr.Image(type='numpy', label='è¾“å‡ºå›¾åƒ', interactive=False)
+                run_button = gr.Button(value='è¿è¡Œ')
 
         run_button.click(fn=process,
                         inputs=[input_image],
@@ -24,13 +24,13 @@ def create_demo_hw1(process):
 
 def create_demo_hw2(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## ×÷Òµ¶ş: XXX¹¤¾ß') 
+        gr.Markdown('## ä½œä¸šäºŒ: XXXå·¥å…·') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='ÊäÈëÍ¼Ïñ')  
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='è¾“å…¥å›¾åƒ')  
             with gr.Column():
-                output_image = gr.Image(type='numpy', label='Êä³öÍ¼Ïñ', interactive=False)
-                run_button = gr.Button(value='ÔËĞĞ')
+                output_image = gr.Image(type='numpy', label='è¾“å‡ºå›¾åƒ', interactive=False)
+                run_button = gr.Button(value='è¿è¡Œ')
 
         run_button.click(fn=process,
                         inputs=[input_image],
@@ -40,13 +40,13 @@ def create_demo_hw2(process):
 
 def create_demo_hw3(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## ×÷ÒµÈı: XXX¹¤¾ß') 
+        gr.Markdown('## ä½œä¸šä¸‰: XXXå·¥å…·') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='ÊäÈëÍ¼Ïñ')  
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='è¾“å…¥å›¾åƒ')  
             with gr.Column():
-                output_image = gr.Image(type='numpy', label='Êä³öÍ¼Ïñ', interactive=False)
-                run_button = gr.Button(value='ÔËĞĞ')
+                output_image = gr.Image(type='numpy', label='è¾“å‡ºå›¾åƒ', interactive=False)
+                run_button = gr.Button(value='è¿è¡Œ')
 
         run_button.click(fn=process,
                         inputs=[input_image],
@@ -55,13 +55,13 @@ def create_demo_hw3(process):
 
 def create_demo_hw4(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## ×÷ÒµËÄ: XXX¹¤¾ß') 
+        gr.Markdown('## ä½œä¸šå››: XXXå·¥å…·') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='ÊäÈëÍ¼Ïñ')  
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='è¾“å…¥å›¾åƒ')  
             with gr.Column():
-                output_image = gr.Image(type='numpy', label='Êä³öÍ¼Ïñ', interactive=False)
-                run_button = gr.Button(value='ÔËĞĞ')
+                output_image = gr.Image(type='numpy', label='è¾“å‡ºå›¾åƒ', interactive=False)
+                run_button = gr.Button(value='è¿è¡Œ')
 
         run_button.click(fn=process,
                         inputs=[input_image],
@@ -70,13 +70,13 @@ def create_demo_hw4(process):
 
 def create_demo_hw5(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## ×÷ÒµÎå: XXX¹¤¾ß') 
+        gr.Markdown('## ä½œä¸šäº”: XXXå·¥å…·') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='ÊäÈëÍ¼Ïñ')  
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='è¾“å…¥å›¾åƒ')  
             with gr.Column():
-                output_image = gr.Image(type='numpy', label='Êä³öÍ¼Ïñ', interactive=False)
-                run_button = gr.Button(value='ÔËĞĞ')
+                output_image = gr.Image(type='numpy', label='è¾“å‡ºå›¾åƒ', interactive=False)
+                run_button = gr.Button(value='è¿è¡Œ')
 
         run_button.click(fn=process,
                         inputs=[input_image],
