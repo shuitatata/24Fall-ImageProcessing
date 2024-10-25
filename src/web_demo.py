@@ -13,13 +13,11 @@ HTML_DESCRIPTION = '''
    图像处理网页演示工具</a>
 </h1>
 <p>使用方式，在浏览器中打开http://127.0.0.1:8088/即可</p>
-<p>作者: 魏铼</p>
-<p>学号: 2200017428</p>
 </div>
 '''
 MD_DESCRIPTION = '''
 ## 此网页演示提供以下图像处理工具:
-- 作业1：XXX工具
+- 作业1：色相/饱和度/亮度调整工具
 - 作业2：XXX工具
 - 作业3：XXX工具
 - 作业4：XXX工具
@@ -31,8 +29,8 @@ def main():
         gr.Markdown(HTML_DESCRIPTION) 
         gr.Markdown(MD_DESCRIPTION)
         with gr.Tabs():
-            with gr.TabItem('作业1: XXX工具'):
-                create_demo_hw1(function_hw1)          
+            with gr.TabItem('作业1: 色相/饱和度/亮度调整工具'):
+                create_demo_hw1(function_hw1, high_contrast_hw1)          
             with gr.TabItem('作业2: XXX工具'):
                 create_demo_hw2(function_hw2)   
             with gr.TabItem('作业3: XXX工具'):

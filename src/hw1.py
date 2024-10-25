@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-def rgb2hls(input_image):
+def bgr2hls(input_image):
     input_image = input_image.astype(np.float32) / 255.0
     B, G, R = input_image[:,:,0], input_image[:,:,1], input_image[:,:,2]
 

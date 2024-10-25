@@ -9,9 +9,9 @@ import os
 
 os.environ['no_proxy'] = "localhost,127.0.0.1,::1"
 
-def create_demo_hw1(process):
+def create_demo_hw1(process, high_contrast_process):
     with gr.Blocks() as demo:
-        gr.Markdown('## 作业一: XXX工具') 
+        gr.Markdown('## 作业一: 色相/饱和度/亮度调整工具') 
         with gr.Row():
             with gr.Column():
                 with gr.Row():
@@ -24,7 +24,10 @@ def create_demo_hw1(process):
                     with gr.Row():
                         lightness = gr.Slider(minimum=-1, maximum=1, step=0.01, value=0, label='亮度')
                     hue = gr.Slider(minimum=0, maximum=180, step=0.01, value=0, label='色相')
-                
+                with gr.Accordion('常用滤镜'):
+                    black_white = gr.Button(value='黑白滤镜')
+                    hight_contrast = gr.Button(value='高对比度滤镜')
+
             with gr.Column():
                 with gr.Row():
                     output_image_hand = gr.Image(type='numpy', label='手动实现', interactive=False)
@@ -54,6 +57,12 @@ def create_demo_hw1(process):
                     outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
         lightness.change(fn=process,
                     inputs=[input_image, hue, saturation, lightness],
+                    outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
+        black_white.click(fn=lambda x: process(x, 0, -1, 0),
+                    inputs=[input_image],
+                    outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
+        hight_contrast.click(fn=high_contrast_process,
+                    inputs=[input_image],
                     outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
     return demo
 
