@@ -68,17 +68,24 @@ def create_demo_hw1(process, high_contrast_process):
 
 def create_demo_hw2(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## 作业二: XXX工具') 
+        gr.Markdown('## 作业二: 图像缩放工具') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像')  
-            with gr.Column():
-                output_image = gr.Image(type='numpy', label='输出图像', interactive=False)
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像') 
+                scale = gr.Slider(minimum=0.5, maximum=4, step=0.01, value=1, label='缩放倍数')
                 run_button = gr.Button(value='运行')
 
-        run_button.click(fn=process,
-                        inputs=[input_image],
-                        outputs=[output_image])
+            with gr.Column():
+                gallery = gr.Gallery(label='手动实现')
+            
+            with gr.Column():
+                gallery_cv2 = gr.Gallery(label='OpenCV实现')
+
+        func_list = [run_button.click, scale.change]
+        for func in func_list:
+            func(fn=process,
+                inputs=[input_image, scale],
+                outputs=[gallery, gallery_cv2])
     return demo
 
 

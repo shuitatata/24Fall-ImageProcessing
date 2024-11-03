@@ -3,6 +3,7 @@ import numpy as np
 import gradio as gr
 import cv2
 import hw1
+import hw2
 
 def function_hw1(input_image, hue, saturation, lightness):
     if input_image is None:
@@ -64,12 +65,23 @@ def high_contrast_hw1(input_image):
         (output_image_cv2[:,:,0], 'B'), (output_image_cv2[:,:,1], 'G'), (output_image_cv2[:,:,2], 'R')]
     return output_image, hls_image_list, output_image_cv2, hls_image_list_cv2
 
-def function_hw2(input_image):
+def function_hw2(input_image, scale):
     if input_image is None:
         raise gr.Error('输入错误：在处理之前请先输入一张图像', duration=5)    
     output_image = input_image
-    # 请补充作业2的图像处理代码
-    return output_image
+    
+    nearest_cv2 = cv2.resize(output_image, None, fx=scale, fy=scale, interpolation=cv2.INTER_NEAREST)
+    bilinear_cv2 = cv2.resize(output_image, None, fx=scale, fy=scale, interpolation=cv2.INTER_LINEAR)
+    bicubic_cv2 = cv2.resize(output_image, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+
+    nearest = hw2.resize_nearest(output_image, scale)
+    bilinear = hw2.resize_bilinear(output_image, scale)
+    bicubic = hw2.resize_bicubic(output_image, scale)
+
+    output_images = [nearest, bilinear, bicubic]
+    output_images_cv2 = [nearest_cv2, bilinear_cv2, bicubic_cv2]
+
+    return output_images, output_images_cv2
 
 def function_hw3(input_image):
     if input_image is None:
