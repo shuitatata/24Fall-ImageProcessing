@@ -105,7 +105,10 @@ def resize_bicubic(image, scale):
 
 def get_rotation_matrix(angle):
     angle = np.deg2rad(angle)
-    return np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
+    return np.array([[np.cos(angle), -np.sin(angle), 0], [np.sin(angle), np.cos(angle), 0], [0, 0, 1]])
+
+def get_translation_matrix(tx, ty):
+    return np.array([[1, 0, tx], [0, 1, ty], [0, 0, 1]])
 
 def get_shear_matrix(kx,ky):
     return np.array([[1, kx], [ky, 1]])
@@ -129,7 +132,7 @@ def apply_transform(image, matrix, output_shape):
 
     # 生成目标图像的坐标网格
     x, y = np.meshgrid(np.arange(new_h), np.arange(new_w), indexing='ij')  # Shape: (new_h, new_w)
-    coords = np.stack([x, y], axis=-1).reshape(-1, 2).astype(np.float32)  # Shape: (new_h*new_w, 2)
+    coords = np.stack([x, y, np.ones_like(x)], axis=-1).reshape(-1, 3).astype(np.float32)  # Shape: (new_h*new_w, 2)
 
     # 计算逆变换矩阵
     try:
@@ -141,12 +144,12 @@ def apply_transform(image, matrix, output_shape):
     # 计算在原图中的坐标（逆映射）
     original_coords = coords @ inverse_matrix.T
     
-    original_coords = original_coords.reshape(new_h, new_w, 2)
+    original_coords = original_coords.reshape(new_h, new_w, 3)
     print(image.shape, new_h)
 
     # 分解为浮点和整数坐标
-    x_orig = original_coords[:, :, 0]
-    y_orig = original_coords[:, :, 1]
+    x_orig = original_coords[:, :, 0] / original_coords[:, :, 2]
+    y_orig = original_coords[:, :, 1] / original_coords[:, :, 2]
     x1 = np.floor(x_orig).astype(int)
     y1 = np.floor(y_orig).astype(int)
     x2 = x1 + 1
@@ -191,9 +194,13 @@ if __name__ == '__main__':
     # cv2.imshow('bilinear', bilinear)
     # cv2.imshow('bicubic', bicubic)
 
-    transform_matrix = get_rotation_matrix(45)
+    rotation_matrix = get_rotation_matrix(45)
+    translation_matrix = get_translation_matrix(-128, -64)
+    translation_matrix2 = get_translation_matrix(128, 64)
+
+    transform_matrix = translation_matrix2 @ rotation_matrix @ translation_matrix
     # transform_matrix = get_shear_matrix(0, 0)
-    new_image = apply_transform(image, transform_matrix, (256, 256))
+    new_image = apply_transform(image, transform_matrix, (256, 128))
     cv2.imshow('rotated', new_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
