@@ -111,9 +111,9 @@ def get_translation_matrix(tx, ty):
     return np.array([[1, 0, tx], [0, 1, ty], [0, 0, 1]])
 
 def get_shear_matrix(kx,ky):
-    return np.array([[1, kx], [ky, 1]])
+    return np.array([[1, kx, 0], [ky, 1, 0], [0, 0, 1]])
 
-def apply_transform(image, matrix, output_shape):
+def apply_transform(image, matrix, output_shape=None):
     """
     Apply a geometric transformation to an image using a given matrix.
     Parameters:
@@ -124,6 +124,8 @@ def apply_transform(image, matrix, output_shape):
         - Transformed image.
     """
     h, w, c = image.shape
+    if output_shape is None:
+        output_shape = (h, w)
     new_h, new_w = output_shape
     new_image = np.zeros((new_h, new_w, c), dtype=np.uint8)
 
@@ -179,8 +181,8 @@ def apply_transform(image, matrix, output_shape):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('../pic/logo.jpg')
-    image = cv2.resize(image, (128, 256))
+    image = cv2.imread('../pic/flower.jpg')
+    image = cv2.resize(image, (256, 256))
     # 绘制图像边框
     image[:5, :, :] = 255
     image[-5:, :, :] = 255
@@ -188,19 +190,35 @@ if __name__ == '__main__':
     image[:, -5:, :] = 255
     cv2.imshow('original', image)
     # cv2.imshow('nearest', resize_nearest(image, 2))
-    # bilinear = resize_bilinear(image, 8)
-    # bicubic = resize_bicubic(image, 8)
+    nearest = resize_nearest(image, 4)
+    bilinear = resize_bilinear(image, 4)
+    bicubic = resize_bicubic(image, 4)
+
+    cv2.imwrite('../assest/hw2/flower_nearest.jpg', nearest)
+    cv2.imwrite('../assest/hw2/flower_bilinear.jpg', bilinear)
+    cv2.imwrite('../assest/hw2/flower_bicubic.jpg', bicubic)
+
+    nearest_cv2 = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_NEAREST)
+    bilinear_cv2 = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_LINEAR)
+    bicubic_cv2 = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_CUBIC)
+
+    cv2.imwrite('../assest/hw2/flower_nearest_cv2.jpg', nearest_cv2)
+    cv2.imwrite('../assest/hw2/flower_bilinear_cv2.jpg', bilinear_cv2)
+    cv2.imwrite('../assest/hw2/flower_bicubic_cv2.jpg', bicubic_cv2)
+
     # print(np.allclose(bilinear, bicubic))
     # cv2.imshow('bilinear', bilinear)
     # cv2.imshow('bicubic', bicubic)
 
-    rotation_matrix = get_rotation_matrix(45)
-    translation_matrix = get_translation_matrix(-128, -64)
-    translation_matrix2 = get_translation_matrix(128, 64)
+    # rotation_matrix = get_rotation_matrix(0)
+    # translation_matrix = get_translation_matrix(0, 0)
+    # translation_matrix2 = get_translation_matrix(0, 0)
 
-    transform_matrix = translation_matrix2 @ rotation_matrix @ translation_matrix
-    # transform_matrix = get_shear_matrix(0, 0)
-    new_image = apply_transform(image, transform_matrix, (256, 128))
-    cv2.imshow('rotated', new_image)
+    # transform_matrix = translation_matrix2 @ rotation_matrix @ translation_matrix
+    # transform_matrix = get_shear_matrix(0.5, 0.5)
+    # new_image = apply_transform(image, transform_matrix)
+    # cv2.imshow('rotated', new_image)
+    # cv2.imwrite('../assest/hw2/flower_sheared.jpg', new_image)
+    cv2.imwrite('../assest/hw2/flower_low.jpg', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

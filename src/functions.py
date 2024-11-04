@@ -65,7 +65,7 @@ def high_contrast_hw1(input_image):
         (output_image_cv2[:,:,0], 'B'), (output_image_cv2[:,:,1], 'G'), (output_image_cv2[:,:,2], 'R')]
     return output_image, hls_image_list, output_image_cv2, hls_image_list_cv2
 
-def function_hw2(input_image, scale):
+def function_hw2(input_image, scale, rotate, translate_x, translate_y, shear_x, shear_y):
     if input_image is None:
         raise gr.Error('输入错误：在处理之前请先输入一张图像', duration=5)    
     output_image = input_image
@@ -78,10 +78,20 @@ def function_hw2(input_image, scale):
     bilinear = hw2.resize_bilinear(output_image, scale)
     bicubic = hw2.resize_bicubic(output_image, scale)
 
-    output_images = [nearest, bilinear, bicubic]
-    output_images_cv2 = [nearest_cv2, bilinear_cv2, bicubic_cv2]
+    transform_matrix = hw2.get_rotation_matrix(rotate)
+    transform_matrix = hw2.get_translation_matrix(translate_x/100.0* output_image.shape[1], translate_y/100.0* output_image.shape[0]) @ transform_matrix
+    transform_matrix = hw2.get_shear_matrix(shear_x, shear_y) @ transform_matrix
 
-    return output_images, output_images_cv2
+    print("processing transform_matrix")
+    output = hw2.apply_transform(bilinear, transform_matrix, bilinear.shape[:2])
+    print("done1")
+
+    # output_cv2 = cv2.warpAffine(bilinear_cv2, transform_matrix[:2], bilinear_cv2.shape[:2][::-1], flags=cv2.INTER_LINEAR)
+
+    output_images = [(nearest, '最近邻插值'), (bilinear, '双线性插值'), (bicubic, '双三次插值')]
+    output_images_cv2 = [(nearest_cv2, '最近邻插值'), (bilinear_cv2, '双线性插值'), (bicubic_cv2, '双三次插值')]
+
+    return output, output_images, output_images_cv2
 
 def function_hw3(input_image):
     if input_image is None:
