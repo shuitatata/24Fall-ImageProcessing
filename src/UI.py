@@ -34,51 +34,49 @@ def create_demo_hw1(process, high_contrast_process):
                 
                 with gr.Accordion('分通道显示'):
                     gallery = gr.Gallery(label='')
-                    # output_image_h = gr.Image(type='numpy', label='色相', interactive=False)
-                    # output_image_l = gr.Image(type='numpy', label='亮度', interactive=False)
-                    # output_image_s = gr.Image(type='numpy', label='饱和度', interactive=False)
             with gr.Column():
                 with gr.Row():
                     output_image_cv2 = gr.Image(type='numpy', label='OpenCV实现', interactive=False)
                 with gr.Accordion('分通道显示'):
                     gallery_cv2 = gr.Gallery(label='')
-                    # output_image_h_cv2 = gr.Image(type='numpy', label='色相', interactive=False)
-                    # output_image_l_cv2 = gr.Image(type='numpy', label='亮度', interactive=False)
-                    # output_image_s_cv2 = gr.Image(type='numpy', label='饱和度', interactive=False)
-                    
-        run_button.click(fn=process,
-                        inputs=[input_image, hue, saturation, lightness],
-                        outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
-        hue.change(fn=process,
-                    inputs=[input_image, hue, saturation, lightness],
-                    outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
-        saturation.change(fn=process,
-                    inputs=[input_image, hue, saturation, lightness],
-                    outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
-        lightness.change(fn=process,
-                    inputs=[input_image, hue, saturation, lightness],
-                    outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
-        black_white.click(fn=lambda x: process(x, 0, -1, 0),
-                    inputs=[input_image],
-                    outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
-        hight_contrast.click(fn=high_contrast_process,
-                    inputs=[input_image],
-                    outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
+        
+        func_list = [run_button.click, hue.change, saturation.change, lightness.change, black_white.click, hight_contrast.click]
+        for fn in func_list:
+            fn(fn=process,
+                inputs=[input_image, hue, saturation, lightness],
+                outputs=[output_image_hand, gallery, output_image_cv2, gallery_cv2])
     return demo
 
 def create_demo_hw2(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## 作业二: XXX工具') 
+        gr.Markdown('## 作业二: 图像缩放工具') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像')  
-            with gr.Column():
-                output_image = gr.Image(type='numpy', label='输出图像', interactive=False)
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像') 
+                scale = gr.Slider(minimum=0.5, maximum=4, step=0.01, value=1, label='缩放倍数')
+
+                transform_matrix = None
+                rotate = gr.Slider(minimum=-180, maximum=180, step=1, value=0, label='旋转角度')
+                translate_x = gr.Slider(minimum=-100, maximum=100, step=1, value=0, label='垂直平移')
+                translate_y = gr.Slider(minimum=-100, maximum=100, step=1, value=0, label='水平平移')
+                shear_x = gr.Slider(minimum=-1, maximum=1, step=0.01, value=0, label='水平错切')
+                shear_y = gr.Slider(minimum=-1, maximum=1, step=0.01, value=0, label='垂直错切')
+
                 run_button = gr.Button(value='运行')
 
-        run_button.click(fn=process,
-                        inputs=[input_image],
-                        outputs=[output_image])
+            with gr.Column():
+                output_image = gr.Image(type='numpy', label='双线性插值-手动实现', interactive=False)
+                gallery = gr.Gallery(label='手动实现')
+            
+            with gr.Column():
+                # output_image_cv2 = gr.Image(type='numpy', label='双线性插值-手动实现', interactive=False)
+                gallery_cv2 = gr.Gallery(label='OpenCV实现')
+
+        func_list = [run_button.click, scale.change, rotate.change, translate_x.change, translate_y.change, shear_x.change, shear_y.change]
+        for func in func_list:
+            func(fn=process,
+                inputs=[input_image, scale, rotate, translate_x, translate_y, shear_x, shear_y],
+                outputs=[output_image, gallery, gallery_cv2])
     return demo
 
 

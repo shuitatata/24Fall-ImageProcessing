@@ -18,7 +18,7 @@ HTML_DESCRIPTION = '''
 MD_DESCRIPTION = '''
 ## 此网页演示提供以下图像处理工具:
 - 作业1：色相/饱和度/亮度调整工具
-- 作业2：XXX工具
+- 作业2：图像缩放工具
 - 作业3：XXX工具
 - 作业4：XXX工具
 - 作业5：XXX工具
@@ -31,7 +31,7 @@ def main():
         with gr.Tabs():
             with gr.TabItem('作业1: 色相/饱和度/亮度调整工具'):
                 create_demo_hw1(function_hw1, high_contrast_hw1)          
-            with gr.TabItem('作业2: XXX工具'):
+            with gr.TabItem('作业2：图像缩放工具'):
                 create_demo_hw2(function_hw2)   
             with gr.TabItem('作业3: XXX工具'):
                 create_demo_hw3(function_hw3)  
