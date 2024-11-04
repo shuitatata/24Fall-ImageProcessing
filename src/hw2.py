@@ -9,8 +9,11 @@ def resize_nearest(image, scale):
     h, w = image.shape[:2]
     new_h, new_w = int(h*scale), int(w*scale)
     new_image = np.zeros((new_h, new_w, 3), dtype=np.uint8)
+
+    # 处理每个像素
     for i in range(new_h):
         for j in range(new_w):
+            # 四舍五入
             origin_i = round(i/scale)
             origin_j = round(j/scale)
             origin_i = min(origin_i, h-1)
@@ -25,19 +28,10 @@ def resize_bilinear(image, scale):
     h, w = image.shape[:2]
     new_h, new_w = int(h*scale), int(w*scale)
 
-    # new_image = np.zeros((new_h, new_w, 3), dtype=np.uint8)
-    # for i in range(new_h):
-    #     for j in range(new_w):
-    #         origin_i = i/scale
-    #         origin_j = j/scale
-    #         x1, y1 = int(origin_i), int(origin_j)
-    #         x2, y2 = min(x1+1, h-1), min(y1+1, w-1)
-    #         u, v = origin_i-x1, origin_j-y1
-    #         new_image[i, j] = (1-u)*(1-v)*image[x1, y1] + u*(1-v)*image[x2, y1] + (1-u)*v*image[x1, y2] + u*v*image[x2, y2]
-
     row_indices = np.arange(new_h).reshape(-1, 1).repeat(new_w, axis=1) / scale
     col_indices = np.arange(new_w).reshape(1, -1).repeat(new_h, axis=0) / scale
     
+    # 计算原图像中四角坐标
     x1 = np.floor(row_indices).astype(int)
     y1 = np.floor(col_indices).astype(int)
     x2 = np.clip(x1 + 1, 0, h - 1)
@@ -69,6 +63,9 @@ def resize_bicubic(image, scale):
     new_image = np.zeros((new_h, new_w, 3), dtype=np.uint8)
 
     def cubic(p:list, x):
+        """
+        Cubic interpolation
+        """
         p = p.astype(np.float32)
         a = p[..., 1, :]
         b = (p[..., 2, :] - p[..., 0, :]) / 2
@@ -76,6 +73,7 @@ def resize_bicubic(image, scale):
         d = (-p[..., 0, :] + 3 * p[..., 1, :] - 3 * p[..., 2, :] + p[..., 3, :]) / 2
         return a + b * x + c * x ** 2 + d * x ** 3
     
+    # 从0到h-1生成new_h个均匀间隔的数
     x_new = np.linspace(0, h-1, new_h)
     y_new = np.linspace(0, w-1, new_w)
     x, y = np.meshgrid(x_new, y_new, indexing='ij')
@@ -90,6 +88,7 @@ def resize_bicubic(image, scale):
 
     print(x_indices.shape, y_indices.shape)
 
+    # 生成patch 4*4*3的像素块
     patch = image[x_indices[:, :, :, None], y_indices[:, :, None, :], :]
 
     print(patch.shape)
@@ -97,8 +96,10 @@ def resize_bicubic(image, scale):
     col = np.zeros((new_h, new_w, 4, 3), dtype=np.float32)
     for m in range(4):
         print(patch[:, :, m, :, :].shape)
+        # 横向插值
         col[:, :, m, :] = cubic(patch[:, :, m, :, :], dy[:, :, None])
     
+    # 纵向插值
     new_image = np.clip(cubic(col, dx[:, :, None]), 0, 255)
 
     return new_image.astype(np.uint8)
