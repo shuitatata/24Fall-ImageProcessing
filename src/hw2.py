@@ -182,7 +182,7 @@ def apply_transform(image, matrix, output_shape=None):
 
 
 if __name__ == '__main__':
-    image = cv2.imread('../pic/flower.jpg')
+    image = cv2.imread('../pic/test/color256.jpg')
     image = cv2.resize(image, (256, 256))
     # 绘制图像边框
     image[:5, :, :] = 255
@@ -195,17 +195,17 @@ if __name__ == '__main__':
     bilinear = resize_bilinear(image, 4)
     bicubic = resize_bicubic(image, 4)
 
-    cv2.imwrite('../assest/hw2/flower_nearest.jpg', nearest)
-    cv2.imwrite('../assest/hw2/flower_bilinear.jpg', bilinear)
-    cv2.imwrite('../assest/hw2/flower_bicubic.jpg', bicubic)
+    cv2.imwrite('../assest/hw2/color256_nearest.jpg', nearest)
+    cv2.imwrite('../assest/hw2/color256_bilinear.jpg', bilinear)
+    cv2.imwrite('../assest/hw2/color256_bicubic.jpg', bicubic)
 
     nearest_cv2 = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_NEAREST)
     bilinear_cv2 = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_LINEAR)
     bicubic_cv2 = cv2.resize(image, None, fx=4, fy=4, interpolation=cv2.INTER_CUBIC)
 
-    cv2.imwrite('../assest/hw2/flower_nearest_cv2.jpg', nearest_cv2)
-    cv2.imwrite('../assest/hw2/flower_bilinear_cv2.jpg', bilinear_cv2)
-    cv2.imwrite('../assest/hw2/flower_bicubic_cv2.jpg', bicubic_cv2)
+    cv2.imwrite('../assest/hw2/color256_nearest_cv2.jpg', nearest_cv2)
+    cv2.imwrite('../assest/hw2/color256_bilinear_cv2.jpg', bilinear_cv2)
+    cv2.imwrite('../assest/hw2/color256_bicubic_cv2.jpg', bicubic_cv2)
 
     # print(np.allclose(bilinear, bicubic))
     # cv2.imshow('bilinear', bilinear)
@@ -220,6 +220,6 @@ if __name__ == '__main__':
     # new_image = apply_transform(image, transform_matrix)
     # cv2.imshow('rotated', new_image)
     # cv2.imwrite('../assest/hw2/flower_sheared.jpg', new_image)
-    cv2.imwrite('../assest/hw2/flower_low.jpg', image)
+    # cv2.imwrite('../assest/hw2/flower_low.jpg', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
