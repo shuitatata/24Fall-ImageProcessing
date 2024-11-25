@@ -82,16 +82,15 @@ def create_demo_hw2(process):
 
 def create_demo_hw3(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## 作业三: XXX工具') 
+        gr.Markdown('## 作业三: DCGAN图像生成工具') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像')  
-            with gr.Column():
-                output_image = gr.Image(type='numpy', label='输出图像', interactive=False)
+                input_seed = gr.Textbox(label='随机种子', value = '42')
                 run_button = gr.Button(value='运行')
+                output_image = gr.Image(type='numpy', label='输出图像', interactive=False)
 
         run_button.click(fn=process,
-                        inputs=[input_image],
+                        inputs=[input_seed],
                         outputs=[output_image])
     return demo
 

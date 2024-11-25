@@ -4,12 +4,14 @@ import gradio as gr
 import cv2
 import hw1
 import hw2
+from hw3 import Generator
+import torch
+import torchvision.utils as vutils
 
 def function_hw1(input_image, hue, saturation, lightness):
     if input_image is None:
         raise gr.Error('输入错误：在处理之前请先输入一张图像', duration=5)
     output_image_cv2 = input_image.copy()
-    
     # print(input_image.dtype)
 
     hls_image = hw1.bgr2hls(input_image)
@@ -93,12 +95,39 @@ def function_hw2(input_image, scale, rotate, translate_x, translate_y, shear_x, 
 
     return output, output_images, output_images_cv2
 
-def function_hw3(input_image):
-    if input_image is None:
-        raise gr.Error('输入错误：在处理之前请先输入一张图像', duration=5)   
-    output_image = input_image
-    # 请补充作业3的图像处理代码
-    return output_image
+def function_hw3(seed = 2024):
+    '''
+    根据输入的种子生成一张图片
+    '''
+    
+    # print(seed)
+
+    try:
+        seed = int(seed)
+    except:
+        raise gr.Error('输入错误：种子必须为整数', duration=5)
+
+    # set the seed
+    torch.manual_seed(seed)
+    # create the generator
+    netG = Generator(0).to("cpu")
+    # load the weights
+    netG.load_state_dict(torch.load("./checkpoint/netG.pth", map_location="cpu", weights_only=False))
+    # generate the image
+    with torch.no_grad():
+        image = netG(torch.randn(1, 100, 1, 1))
+    # convert to numpy
+    image = image.cpu().detach().numpy() # [1, 3, 64, 64]
+
+    # Convert the generated image to a format suitable for display with OpenCV
+    image = (image.squeeze().transpose(1, 2, 0) * 127.5 + 127.5).astype(np.uint8)
+
+    # fake_image = cv2.cvtColor(fake_image, cv2.COLOR_RGB2BGR)
+    
+    # cv2.imshow("fake", cv2.resize(fake, (256, 256)))
+    # cv2.waitKey(0)
+    return image
+    # return output_image
 
 def function_hw4(input_image):
     if input_image is None:
@@ -113,3 +142,6 @@ def function_hw5(input_image):
     output_image = input_image
     # 请补充作业5的图像处理代码
     return output_image
+
+if __name__ == '__main__':
+    function_hw3(999)
