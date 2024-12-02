@@ -5,6 +5,7 @@ import cv2
 import hw1
 import hw2
 from hw3 import Generator
+import hw4
 import torch
 import torchvision.utils as vutils
 
@@ -129,12 +130,38 @@ def function_hw3(seed = 2024):
     return image
     # return output_image
 
-def function_hw4(input_image):
+def function_hw4(input_image, guided_image=None, r=4, eps=0.01, sigma_color=75, sigma_space=75, lambda_factor=1, mode='导向滤波'):
     if input_image is None:
         raise gr.Error('输入错误：在处理之前请先输入一张图像', duration=5)
-    output_image = input_image
-    # 请补充作业4的图像处理代码
-    return output_image
+    # output_image = input_image
+    if guided_image is None:
+        guided_image = input_image
+    
+    if mode == '导向滤波':
+        sharpen_image = input_image.copy()
+
+        input_image = input_image.astype(np.float32) / 255.0
+        guided_image = guided_image.astype(np.float32) / 255.0
+        
+        filtered_image = hw4.guided_filter(guided_image, input_image, r, eps)
+        filtered_image = (filtered_image * 255).astype(np.uint8)
+
+        sharpened_image = hw4.sharpen_guided(sharpen_image, r, eps, lambda_factor)
+        # sharpened_image = (sharpened_image * 255).astype(np.uint8)
+        return filtered_image, sharpened_image
+    
+    elif mode == '双边滤波':
+        sharpen_image = input_image.copy()
+
+        input_image = input_image.astype(np.float32) / 255.0
+        filtered_image = hw4.bilateral_filter(input_image, r, sigma_color, sigma_space)
+        filtered_image = (filtered_image * 255).astype(np.uint8)
+
+        sharpened_image = hw4.sharpen_bilateral(sharpen_image, r, sigma_color, sigma_space, lambda_factor)
+        # sharpened_image = (sharpened_image * 255).astype(np.uint8)
+        return filtered_image, sharpened_image
+    else :
+        raise gr.Error('输入错误：请选择正确的滤波模式', duration=5)
 
 def function_hw5(input_image):
     if input_image is None:

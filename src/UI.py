@@ -96,17 +96,26 @@ def create_demo_hw3(process):
 
 def create_demo_hw4(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## 作业四: XXX工具') 
+        gr.Markdown('## 作业四: 图像去噪工具') 
         with gr.Row():
             with gr.Column():
-                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像')  
+                input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='待去噪图像')
+                guided_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='导向图像')
+                mode = gr.Radio(['双边滤波', '导向滤波'], label='滤波模式')
+                r = gr.Slider(minimum=1, maximum=10, step=1, value=4, label='窗口半径（导向滤波）')
+                eps = gr.Slider(minimum=0.01, maximum=1, step=0.01, value=0.01, label='eps（导向滤波）')
+                sigma_color = gr.Slider(minimum=0, maximum=100, step=1, value=75, label='颜色空间滤波器的 sigma 值（双边滤波）')
+                sigma_space = gr.Slider(minimum=0, maximum=100, step=1, value=75, label='坐标空间滤波器的 sigma 值（双边滤波）')
+                lambda_factor = gr.Slider(minimum=0, maximum=5, step=0.1, value=1, label='锐化系数')
+
             with gr.Column():
                 output_image = gr.Image(type='numpy', label='输出图像', interactive=False)
+                output_image2 = gr.Image(type='numpy', label='锐化图像', interactive=False)
                 run_button = gr.Button(value='运行')
 
         run_button.click(fn=process,
-                        inputs=[input_image],
-                        outputs=[output_image])
+                        inputs=[input_image, guided_image, r, eps, sigma_color, sigma_space, lambda_factor, mode],
+                        outputs=[output_image, output_image2])
     return demo
 
 def create_demo_hw5(process):

@@ -35,7 +35,7 @@ def main():
                 create_demo_hw2(function_hw2)   
             with gr.TabItem('作业3: DCGAN图像生成工具'):
                 create_demo_hw3(function_hw3)  
-            with gr.TabItem('作业4: XXX工具'):
+            with gr.TabItem('作业4: 图像去噪工具'):
                 create_demo_hw4(function_hw4) 
             with gr.TabItem('作业5: XXX工具'):
                 create_demo_hw5(function_hw5)                                    

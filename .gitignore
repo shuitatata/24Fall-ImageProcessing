@@ -1,10 +1,10 @@
 **/__pycache__/
-*.pdf
+# *.pdf
 .pyc
 *.md
 **/data/
 **/checkpoint/
 *.zip
 *.docx
-*.md
+# *.md
 *.rar
