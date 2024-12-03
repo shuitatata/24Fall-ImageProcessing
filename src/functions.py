@@ -6,6 +6,7 @@ import hw1
 import hw2
 from hw3 import Generator
 import hw4
+import hw5
 import torch
 import torchvision.utils as vutils
 
@@ -168,6 +169,9 @@ def function_hw5(input_image):
         raise gr.Error('输入错误：在处理之前请先输入一张图像', duration=5)
     output_image = input_image
     # 请补充作业5的图像处理代码
+
+    output_image = hw5.histogram_equalization(output_image)
+    
     return output_image
 
 if __name__ == '__main__':

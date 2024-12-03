@@ -120,7 +120,7 @@ def create_demo_hw4(process):
 
 def create_demo_hw5(process):
     with gr.Blocks() as demo:
-        gr.Markdown('## 作业五: XXX工具') 
+        gr.Markdown('## 作业五: 图像提亮工具') 
         with gr.Row():
             with gr.Column():
                 input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像')  
