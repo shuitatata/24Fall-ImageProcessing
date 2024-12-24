@@ -125,10 +125,11 @@ def create_demo_hw5(process):
             with gr.Column():
                 input_image = gr.Image(sources=['upload', 'webcam', 'clipboard'], type='numpy', label='输入图像')  
             with gr.Column():
-                output_image = gr.Image(type='numpy', label='输出图像', interactive=False)
+                output_image_1 = gr.Image(type='numpy', label='直方图均衡化', interactive=False)
+                output_image_2 = gr.Image(type='numpy', label='CLAHE', interactive=False)
                 run_button = gr.Button(value='运行')
 
         run_button.click(fn=process,
                         inputs=[input_image],
-                        outputs=[output_image])
+                        outputs=[output_image_1, output_image_2])
     return demo

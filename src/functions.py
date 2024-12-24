@@ -170,9 +170,10 @@ def function_hw5(input_image):
     output_image = input_image
     # 请补充作业5的图像处理代码
 
-    output_image = hw5.histogram_equalization(output_image)
+    output_image_1 = hw5.histogram_equalization(output_image)
+    output_image_2 = hw5.clahe_algorithm(output_image)
     
-    return output_image
+    return output_image_1, output_image_2
 
 if __name__ == '__main__':
     function_hw3(999)

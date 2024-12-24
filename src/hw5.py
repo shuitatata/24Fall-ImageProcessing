@@ -168,41 +168,86 @@ def clahe_algorithm(img, clip_limit=2.0, tile_grid_size=(8, 8)):
     # 将图像从 LAB 转回 BGR 色彩空间
     equalized_img = cv2.cvtColor(equalized_lab, cv2.COLOR_LAB2BGR)
 
-    # 手动计算原始 L 通道的直方图和 CDF
-    hist_original = np.bincount(original_l.flatten(), minlength=256).astype(np.float32)
-    cdf_original = hist_original.cumsum()
-    cdf_original_normalized = cdf_original / cdf_original.max()
+    return equalized_img
 
-    # 绘制原始和均衡化后的 L 通道 CDF
-    plt.figure(figsize=(12, 6))
+def clahe_opencv(img, clip_limit=2.0, tile_grid_size=(8, 8)):
+    # 将图像从 BGR 转换为 LAB 色彩空间
+    lab_img = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
 
-    plt.subplot(2, 2, 1)
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-    plt.title('原始图像')
+    # 分离 L、A、B 三个通道
+    l_channel, a_channel, b_channel = cv2.split(lab_img)
+
+    # 创建 CLAHE 对象
+    clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_grid_size)
+
+    # 对 L 通道应用 CLAHE
+    equalized_l = clahe.apply(l_channel)
+
+    # 合并均衡化后的 L 通道和原始的 A、B 通道
+    equalized_lab = cv2.merge([equalized_l, a_channel, b_channel])
+
+    # 将图像从 LAB 转回 BGR 色彩空间
+    equalized_img = cv2.cvtColor(equalized_lab, cv2.COLOR_LAB2BGR)
+
+    return equalized_img
+
+def compare_histograms(img1, img2, img3):
+    def calculate_cdf(img):
+        hist = np.bincount(img.flatten(), minlength=256).astype(np.float32)
+        cdf = hist.cumsum()
+        cdf_normalized = cdf / cdf.max()
+        return cdf_normalized
+
+    # 将图像从 BGR 转换为灰度图像
+    gray_img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+    gray_img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+    gray_img3 = cv2.cvtColor(img3, cv2.COLOR_BGR2GRAY)
+
+    # 计算 CDF
+    cdf_img1 = calculate_cdf(gray_img1)
+    cdf_img2 = calculate_cdf(gray_img2)
+    cdf_img3 = calculate_cdf(gray_img3)
+
+    # 显示图像和 CDF
+    plt.figure(figsize=(18, 6))
+
+    plt.subplot(2, 3, 1)
+    plt.imshow(cv2.cvtColor(img1, cv2.COLOR_BGR2RGB))
+    plt.title('Image 1')
     plt.axis('off')
 
-    plt.subplot(2, 2, 2)
-    plt.imshow(cv2.cvtColor(equalized_img, cv2.COLOR_BGR2RGB))
-    plt.title('手动 CLAHE 处理后图像')
+    plt.subplot(2, 3, 2)
+    plt.imshow(cv2.cvtColor(img2, cv2.COLOR_BGR2RGB))
+    plt.title('Image 2')
     plt.axis('off')
 
-    plt.subplot(2, 2, 3)
-    plt.plot(cdf_original_normalized, color='blue')
-    plt.title('原始 L 通道 CDF')
+    plt.subplot(2, 3, 3)
+    plt.imshow(cv2.cvtColor(img3, cv2.COLOR_BGR2RGB))
+    plt.title('Image 3')
+    plt.axis('off')
 
-    plt.subplot(2, 2, 4)
-    plt.plot(cdf_equalized_normalized, color='red')
-    plt.title('CLAHE 后 L 通道 CDF')
+    plt.subplot(2, 3, 4)
+    plt.plot(cdf_img1, color='blue')
+    plt.title('CDF of Image 1')
+
+    plt.subplot(2, 3, 5)
+    plt.plot(cdf_img2, color='red')
+    plt.title('CDF of Image 2')
+
+    plt.subplot(2, 3, 6)
+    plt.plot(cdf_img3, color='green')
+    plt.title('CDF of Image 3')
 
     plt.tight_layout()
     plt.show()
-
-    return equalized_img
 
 # 使用示例
 if __name__ == "__main__":
     img = cv2.imread('./pic/hw5/2039.jpg')  # 确保使用彩色图像
     equalized_img = clahe_algorithm(img)
+    equalized_img2 = clahe_opencv(img)
+    equalized_img_1 = histogram_equalization(img)
+    compare_histograms(img, equalized_img, equalized_img_1)
     # 如果需要保存均衡化后的图像，可以取消下面的注释
     # cv2.imshow('equalized_image', equalized_img)
     # cv2.waitKey(0)
