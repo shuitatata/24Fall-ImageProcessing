@@ -20,8 +20,8 @@ MD_DESCRIPTION = '''
 - 作业1：色相/饱和度/亮度调整工具
 - 作业2：图像缩放工具
 - 作业3：DCGAN图像生成工具
-- 作业4：XXX工具
-- 作业5：XXX工具
+- 作业4：图像去噪工具
+- 作业5：图像提亮工具
 '''
 
 def main():
@@ -38,7 +38,9 @@ def main():
             with gr.TabItem('作业4: 图像去噪工具'):
                 create_demo_hw4(function_hw4) 
             with gr.TabItem('作业5: 图像提亮工具'):
-                create_demo_hw5(function_hw5)                                    
+                create_demo_hw5(function_hw5)
+            with gr.TabItem('Final Project: 水墨风朋友圈生成器'):
+                create_demo_final_project(function_final_project)                               
 
     demo.launch(server_port=8088)
 

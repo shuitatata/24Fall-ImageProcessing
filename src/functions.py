@@ -9,6 +9,7 @@ import hw4
 import hw5
 import torch
 import torchvision.utils as vutils
+import final
 
 def function_hw1(input_image, hue, saturation, lightness):
     if input_image is None:
@@ -174,6 +175,20 @@ def function_hw5(input_image):
     output_image_2 = hw5.clahe_algorithm(output_image)
     
     return output_image_1, output_image_2
+
+def function_final_project(input_image):
+    if input_image is None:
+        raise gr.Error('输入错误：在处理之前请先输入一张图像', duration=5)
+    output_image = input_image
+
+    output_image = final.create_image(output_image)
+
+    print("generate done!")
+
+    poem = final.generate_poem(output_image)
+
+
+    return output_image, poem
 
 if __name__ == '__main__':
     function_hw3(999)
